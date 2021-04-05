@@ -454,8 +454,10 @@ public class GUI implements ActionListener, TableModelListener {
     private ImageIcon checkBoxBorder;
 
     public CustomCheckBox(){
-      checkBox = new ImageIcon("./src/res/checkbox.png");
-      checkBoxBorder = new ImageIcon("./src/res/checkboxborder.png");
+      //checkBox = new ImageIcon("./src/res/checkbox.png");
+      //checkBoxBorder = new ImageIcon("./src/res/checkboxborder.png");
+      checkBox = new ImageIcon(this.getClass().getResource("/src/res/checkbox.png"));
+      checkBoxBorder = new ImageIcon(this.getClass().getResource("/src/res/checkboxborder.png"));
     }
 
     @Override
