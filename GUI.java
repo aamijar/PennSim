@@ -9,9 +9,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+
+import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -25,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JToggleButton;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -36,6 +41,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicSliderUI.ComponentHandler;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -254,19 +260,29 @@ public class GUI implements ActionListener, TableModelListener {
         public Component prepareRenderer(TableCellRenderer renderer, int param1Int1, int param1Int2) {
           Component component = super.prepareRenderer(renderer, param1Int1, param1Int2);
           if (param1Int2 == 0) {
-            JCheckBox jCheckBox = new JCheckBox();
+
+            
+
+            //ImageIcon icon = new ImageIcon("./checkboxborder.png");
+            //ImageIcon check = new ImageIcon("./checkbox.png");
+            CustomCheckBox jCheckBox = new CustomCheckBox();
+            // JCheckBox jCheckBox = new JCheckBox();
+            // jCheckBox.setSize(100, 100);
             if (param1Int1 < 65024) {
               if (GUI.this.mac.getMemory().isBreakPointSet(param1Int1)) {
+                
+                //jCheckBox.setIcon(check);
                 jCheckBox.setSelected(true);
                 jCheckBox.setBackground(GUI.BreakPointColor);
                 jCheckBox.setForeground(GUI.BreakPointColor);
+
               } else {
                 jCheckBox.setSelected(false);
                 jCheckBox.setBackground(getBackground());
+                //jCheckBox.setIcon(icon);
               } 
             } else {
               jCheckBox.setEnabled(false);
-              jCheckBox.setBackground(Color.lightGray);
             } 
             return jCheckBox;
           } 
@@ -309,12 +325,14 @@ public class GUI implements ActionListener, TableModelListener {
       }
       
     };
-
+    
     // this.memTable.setFocusable(false);
     this.memTable.setCellSelectionEnabled(true);
     // this.memTable.setShowGrid(true);
     // this.memTable.setGridColor(new Color(1, 94, 105));
     this.memTable.setDefaultRenderer(Object.class, new CustomTableRenderer());
+    // this.memTable.setDefaultEditor(Boolean.class, new DefaultCellEditor(new JCheckBox())); // Boolean.class may not be working since not implemented in Memory.java
+    // this.memTable.setDefaultRenderer(Boolean.class, new CustomBooleanCellRenderer());
     // this.memTable.setBackground(Color.BLUE);
     // this.memTable.setRowSelectionAllowed(true);
 
@@ -330,9 +348,13 @@ public class GUI implements ActionListener, TableModelListener {
     
 
     tableColumn = this.memTable.getColumnModel().getColumn(0);
-    tableColumn.setMaxWidth(30);
-    tableColumn.setMinWidth(30);
-    tableColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+    tableColumn.setMaxWidth(30); //30
+    tableColumn.setMinWidth(30); //30
+    // tableColumn.setCellEditor(new CustomBooleanCellEditor());
+    // tableColumn.setCellEditor(new CustomBooleanCellEditor());
+    // tableColumn.setCellEditor(new DefaultCellEditor(new JCheckBox()));
+    tableColumn.setCellEditor(new DefaultCellEditor(new CustomCheckBox()));
+    // tableColumn.setCellRenderer(new CustomBooleanCellRenderer());
     tableColumn = this.memTable.getColumnModel().getColumn(2);
     tableColumn.setMinWidth(50);
     tableColumn.setMaxWidth(50);
@@ -365,7 +387,7 @@ public class GUI implements ActionListener, TableModelListener {
     this.commandPanel.setGUI(this);
   }
 
-  public class CustomTableRenderer extends DefaultTableCellRenderer{
+  public class CustomTableRenderer extends DefaultTableCellRenderer {
     /**
      *
      */
@@ -425,6 +447,67 @@ public class GUI implements ActionListener, TableModelListener {
     }
 
   }
+
+  public class CustomCheckBox extends JCheckBox{
+
+    private ImageIcon checkBox;
+    private ImageIcon checkBoxBorder;
+
+    public CustomCheckBox(){
+      checkBox = new ImageIcon("./src/res/checkbox.png");
+      checkBoxBorder = new ImageIcon("./src/res/checkboxborder.png");
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+      super.setSelected(selected);
+      if (selected){
+        setIcon(checkBox);
+        // setPressedIcon(checkBox);
+      } else{
+        setIcon(checkBoxBorder);
+      }
+    }
+
+  }
+
+  public class CustomBooleanCellRenderer extends CustomCheckBox implements TableCellRenderer {
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (value instanceof Boolean) {
+            boolean selected = (boolean) value;
+            setSelected(selected);
+        }
+        return this;
+    }
+
+  }
+
+  public class CustomBooleanCellEditor extends AbstractCellEditor implements TableCellEditor {
+
+    private CustomCheckBox editor;
+
+    public CustomBooleanCellEditor() {
+        editor = new CustomCheckBox();
+    }
+
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        if (value instanceof Boolean) {
+            boolean selected = (boolean) value;
+            editor.setSelected(selected);
+        }
+        return editor;
+    }
+
+    @Override
+    public Object getCellEditorValue() {
+        return editor.isSelected();
+    }
+
+  }
+
 
   // public class RoundBorder implements Border {
 
