@@ -1,0 +1,2 @@
+reset
+ld lc3os.obj
