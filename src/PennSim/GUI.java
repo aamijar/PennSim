@@ -196,8 +196,8 @@ public class GUI implements ActionListener, TableModelListener {
     gridBagConstraints.fill = 1;
     this.controlPanel.add(this.commandPanel, gridBagConstraints);
     // 100, 150
-    this.controlPanel.setMinimumSize(new Dimension(200, 260));
-    this.controlPanel.setPreferredSize(new Dimension(200, 260));
+    this.controlPanel.setMinimumSize(new Dimension(100, 175));
+    this.controlPanel.setPreferredSize(new Dimension(100, 175));
     // this.controlPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Controls"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
     this.controlPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(5,5,5,5), "Controls"));
     this.controlPanel.setVisible(true);
@@ -228,7 +228,8 @@ public class GUI implements ActionListener, TableModelListener {
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 1;
     gridBagConstraints.weightx = 1.0D;
-    gridBagConstraints.fill = GridBagConstraints.BOTH; // 0
+    gridBagConstraints.fill = 0;
+    //gridBagConstraints.fill = GridBagConstraints.BOTH; // 0
     this.devicePanel.add(this.ioPanel, gridBagConstraints);
     // this.devicePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Devices"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
     this.devicePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(5,5,5,5), "Devices"));
