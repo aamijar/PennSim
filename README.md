@@ -1,7 +1,5 @@
 # PennSim
 
-
-
 <h4 align="center">
   <br>
     <a href=""><img src="src/res/PennSimRevisedMac.png" alt="PennSim Revised Screenshot" height="700"></a>
@@ -41,4 +39,3 @@ Replace compiled file in jar
 Open application
 
 ```$ java -jar /path/to/PennSim.jar```
-
