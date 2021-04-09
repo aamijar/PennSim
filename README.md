@@ -27,3 +27,18 @@
     PennSim Original UI
   <br>
 </h4>
+
+## Build Steps
+
+Compile single edited file using jar file as a dependency
+
+```javac -classpath /path/to/PennSim.jar GUI.java```
+
+Replace compiled file in jar
+
+```jar uf /path/to/PennSim.jar GUI.class```
+
+Open application
+
+```java -jar /path/to/PennSim.jar```
+
